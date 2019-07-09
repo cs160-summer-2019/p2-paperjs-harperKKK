@@ -47,6 +47,10 @@
 				lastClicked: null,
 				filePath: '/static/coloring/images/mandala-freepik.svg'
 			};	
+      
+      var rec = {
+        
+      }
 
 			// color palette
 			var cp = {
@@ -58,15 +62,39 @@
 			// your rectangle gradient interaction goes in this function
 			// you may also add code outside of the function (e.g., global variables)
 			function myGradientInteraction(){
+        
+        // draw rec
+        var rect = new paper.Rectangle();
+        rect.center = paper.view.center;
+        rect.size = new paper.Size(400, 200);
+        var path = new paper.Path.Rectangle(rect);
+        path.fillColor = "red";
+        
 				var tool = new paper.Tool();
+        
+        var originX,originY
 
 				tool.onMouseDown = function (event) {
-
+          originX = event.event.pageX;
+          originY = event.event.pageY;
 				}
 
 				tool.onMouseUp = function (event) {
-					
+          var endX = event.event.pageX;
+          var endY = event.event.pageY;
+          
+          var color1 = cp.history[cp.history.length - 2];
+          var color2 = cp.history[cp.history.length - 1];
+
+          path.fillColor = {
+              gradient: {
+                  stops: [color2, color1]
+              },
+              origin: [originX,originY],
+              destination: [endX,endY]
+          }
 				}
+        
 			}
 
 			// your custom interaction goes here!
@@ -141,7 +169,7 @@
 	</script>
 </head>
 <body>	
-
+<!--   <canvas id="myCanvasRec" width="200px" height="150px"></canvas> -->
 	<canvas id="myCanvas" width="750px" height="750px"></canvas>
 	<div id="color-palette"></div>
 </body>
